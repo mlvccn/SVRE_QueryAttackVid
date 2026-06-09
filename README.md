@@ -118,7 +118,7 @@ The following table reports quantitative attack results on UCF101. MAP denotes m
 |  | **Ours** | - | **2.192** | **8707** | **47%** | **2.362** | **18430** | **45%** |
 
 ## Qualitative results
-
+Here are some samples randomly selected from UCF101.
 ![](figures/work2_ucf101_vis.png)
 
 ## **Citation**
