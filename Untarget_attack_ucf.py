@@ -2,7 +2,6 @@ from Utils.utils import *
 from configs.config import*
 from model_wrapper.vid_model_top_k import C3D_K_Model, SLOWFAST_K_Model, TSN_K_Model, TSM_K_Model, C3D_K_Model_k400
 import numpy as np
-# from attack.attackZERO_test import untargeted_video_attack
 from attack.adapterAttack import untargeted_video_attack, model_denpendcy_attack, data_denpendcy_attack, compute_model_key_frame
 
 from utils import *
@@ -19,11 +18,8 @@ def main(args):
         os.environ["CUDA_VISIBLE_DEVICES"] = ', '.join([str(gpu) for gpu in gpus])
         print('load {} dataset'.format(dataset_name))
         print('load {} model'.format(model_name))
-        # model = generate_model(model_name, dataset_name)
         print('Initialize model')
-        # attacked_ids = [0, 1, 2, 3]
         attacked_ids = list(range(101))
-        # attacked_ids = [0, 1, 2, 3]
             
         ### tt_test
         # loading cfg
@@ -38,28 +34,19 @@ def main(args):
         vid_model.cuda()
         vid_model.eval()
 
-        def GetPairs_ori( idx):
-            x0 = torch.from_numpy(np.load('numpy_video/{}.npy'.format(idx)))
-            #x0 = image_to_vector(model_name, dataset_name, x0)  # 将视频归一化在[0,1]之间
-
-            if x0.size(0) == 3:
-                x0 = x0.transpose(1, 0)
-            return x0.cuda(), x0
-
-        def GetPairs_ori_tt_ucf_test( idx):
-            x0 = torch.from_numpy(np.load('/home/pangbo/reproduction/TT-master/output/curve_nonlocal101_ucf101/UCF-i3d_resnet101-Group_Meta-False-10-20_4/{}-ori.npy'.format(idx)))
-            # x0 = image_to_vector(model_name, dataset_name, x0)  # 将视频归一化在[0,1]之间
+        def GetPairs_ori_SVRE( idx):
+            x0 = torch.from_numpy(np.load('your-path/{}-ori.npy'.format(idx)))
             x0 = torch.unsqueeze(x0, dim=0)
         
             if x0.size(0) == 3:
                 x0 = x0.transpose(1, 0)
             return x0.cuda(), x0
 
-        method = str('vis_k8')
+        method = str('SVRE')
         result_path =args.adv_path
         if not os.path.exists(result_path):
             os.makedirs(result_path)
-        result_root = os.path.join(result_path,'ASTii/{}_{}_{}'.format(method, args.model_name, args.dataset_name))
+        result_root = os.path.join(result_path,'SVRE/{}_{}_{}'.format(method, args.model_name, args.dataset_name))
         if not os.path.exists(result_root):
            os.makedirs(result_root)
            
@@ -80,51 +67,10 @@ def main(args):
         all_channel_score = torch.zeros(32).to('cuda')
         
         model_keyframes = list(range(32))
-        
-        # frequence 
-        # for idx in range(0, 1):
-            
-        #     idx = 35
-            
-        #     # vid, x0 = GetPairs_ori(attacked_ids[idx])
-        #     vid, x0 = GetPairs_ori_tt_ucf_test(attacked_ids[idx])
-        #     ori_vid_batch = vid
-        #     # top_val, label, logits = vid_model(ori_vid_batch[None, :])
-        #     logits = vid_model(ori_vid_batch)
-        #     top_val, label = logits.topk(1, 1, True, True)
-            
-        #     '--------------------Attack-----------------------'
-        #     print('THE {}th Attacking.....'.format(attacked_ids[idx]))
-            
-        #     spatial_hpf_video, temporal_hpf_video, st_hpf_video = data_denpendency_attack_v1(vid_model, vid, label)
-        #     np.save(os.path.join(result_npy, 's-adv'.format(label.item())), spatial_hpf_video)
-        #     np.save(os.path.join(result_npy, 't-adv'.format(label.item())), temporal_hpf_video)
-        #     np.save(os.path.join(result_npy, 'st-adv'.format(label.item())), st_hpf_video)
-            
-            
-        # data_dependency
-        # for idx in range(0, len(attacked_ids)):
-            
-        #     vid, x0 = GetPairs_ori_tt_ucf_test(attacked_ids[idx])
-        #     ori_vid_batch = vid
-        #     logits = vid_model(ori_vid_batch)
-        #     top_val, label = logits.topk(1, 1, True, True)
-            
-        #     '--------------------Attack-----------------------'
-        #     print('THE {}th Attacking.....'.format(attacked_ids[idx]))
-            
-        #     mask_score, channel_score = model_denpendcy_attack(vid_model, vid, label)
-        #     all_mask_score += mask_score
-        #     all_channel_score += channel_score
-        #     print('Current Average Mask{}'.format(all_mask_score / (idx + 1)))
-        #     print('Current Average Channel{}'.format(all_channel_score / (idx + 1)))
-        
-        # model_dependency = all_channel_score / len(attacked_ids)
-        # model_keyframes = compute_model_key_frame(model_dependency, w = 1, alpah = 1)
 
         for idx in range(0, len(attacked_ids)):
             # vid, x0 = GetPairs_ori(attacked_ids[idx])
-            vid, x0 = GetPairs_ori_tt_ucf_test(attacked_ids[idx])
+            vid, x0 = GetPairs_ori_SVRE(attacked_ids[idx])
             ori_vid_batch = vid
             # top_val, label, logits = vid_model(ori_vid_batch[None, :])
             logits = vid_model(ori_vid_batch)
