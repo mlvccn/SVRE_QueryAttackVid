@@ -10,15 +10,15 @@ Video classification models using neural networks are highly vulnerable to adver
 
 ## Table of Contents
 
-\- [Requirements](#requirements)
-\- [Dataset](#dataset)
-\- [Models](#models)
-\- [Attack](#attack)
-\- [Quantitative results on UCF101](#quantitative-results-on-ucf101)
-\- [Qualitative results](#qualitative-results)
-\- [Citation](#citation)
-\- [Acknowledgement](#acknowledgement)
-\- [License](#license)
+- [Requirements](#requirements)
+- [Dataset](#dataset)
+- [Models](#models)
+- [Attack](#attack)
+- [Quantitative results](#quantitative-results-on-ucf101)
+- [Qualitative results](#qualitative-results-on-ucf101)
+- [Citation](#citation)
+- [Acknowledgement](#acknowledgement)
+- [License](#license)
 
 ## **Requirements**
 
@@ -49,7 +49,7 @@ Then you should prepare the datasets as follows:
     ├──Kinetics400-EXAMPLE
 ```
 
-## Models
+## **Models**
 
 For action recognition, Non-local, SlowFast, TPN with ResNet-50 and ResNet-101 as backbones are used here.
 
@@ -117,7 +117,7 @@ The following table reports quantitative attack results on UCF101. MAP denotes m
 |  | FDP | ACMMM’25 | 3.962 | 9481 | 44% | 4.186 | 19874 | 40% |
 |  | **Ours** | - | **2.192** | **8707** | **47%** | **2.362** | **18430** | **45%** |
 
-## Qualitative results
+## Qualitative results on UCF101
 Here are some samples randomly selected from UCF101.
 ![](figures/work2_ucf101_vis.png)
 
