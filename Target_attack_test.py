@@ -37,7 +37,7 @@ def main(args):
 
 
         def GetPairs_ori( idx):
-            x0 = torch.from_numpy(np.load('numpy_video/{}.npy'.format(idx)))
+            x0 = torch.from_numpy(np.load('your-path/{}.npy'.format(idx)))
             # x0 = image_to_vector(model_name, dataset_name, x0)  # 将视频归一化在[0,1]之间
             if x0.size(0) == 3:
                 x0 = x0.transpose(1, 0)
@@ -45,11 +45,11 @@ def main(args):
 
 
 
-        method = str('AST')
-        result_path ='UN/ASTii'
+        method = str('SVRE')
+        result_path ='SVRE'
         if not os.path.exists(result_path):
             os.mkdir(result_path)
-        result_root = 'UN/ASTii/{}_{}_{}'.format(method, args.model_name, args.dataset_name)
+        result_root = 'SVRE/{}_{}_{}'.format(method, args.model_name, args.dataset_name)
         if not os.path.exists(result_root):
            os.mkdir(result_root)
         total_iternum_average = 0
